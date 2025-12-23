@@ -249,7 +249,7 @@ extern "C" {
 			float bytesInFlightHeadRoom = kBytesInFlightHeadRoom,
 			float multiplicativeIncreaseScalefactor = kMultiplicativeIncreaseScalefactor,
 			bool isL4s = false,
-			float maxWindowHeadroom = 3.0f,
+			float maxWindowHeadroom = 5.0f,
 			bool enableSbd = kEnableSbd,
 			bool enableClockDriftCompensation = false);
 
