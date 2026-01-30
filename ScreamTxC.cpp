@@ -6,7 +6,7 @@
 
 #include "include/ScreamTx.h"
 
-ScreamV2Tx* ScreamTxInit(bool isL4s) {
+ScreamV2Tx* ScreamTxInit(bool isL4s, bool pacing) {
   auto s = new ScreamV2Tx(
     0.7,
     0.7,
@@ -18,6 +18,8 @@ ScreamV2Tx* ScreamTxInit(bool isL4s) {
     0.45f,
     isL4s
   );
+
+  s->enablePacketPacing(pacing);
 
   return s;
 }

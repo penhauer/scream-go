@@ -24,9 +24,9 @@ type Tx struct {
 }
 
 // NewTx creates a new Tx instance.
-func NewTx(isL4S bool) *Tx {
+func NewTx(isL4S bool, pacing bool) *Tx {
 	return &Tx{
-		screamTx: C.ScreamTxInit(C.bool(isL4S)),
+		screamTx: C.ScreamTxInit(C.bool(isL4S), C.bool(pacing)),
 		pinner:   &runtime.Pinner{},
 	}
 }
