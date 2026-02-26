@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	tx := scream.NewTx(false, true)
+	tx := scream.NewTx(scream.DefaultTxConfig())
 	log.Printf("got tx: %v", tx)
 }

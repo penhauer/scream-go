@@ -6,20 +6,35 @@
 
 #include "include/ScreamTx.h"
 
-ScreamV2Tx* ScreamTxInit(bool isL4s, bool pacing) {
+ScreamV2Tx* ScreamTxInit(bool isL4s,
+                         bool pacing,
+                         bool delayBasedCC,
+                         float packetPacingHeadroom,
+                         float adaptivePaceHeadroom,
+                         float bytesInFlightHeadroom,
+                         float maxWindowHeadroom,
+                         bool relaxedPacing,
+                         int initialCwnd) {
+  if (initialCwnd <= 0) {
+    initialCwnd = 100 * 1000 / 8;
+  }
+
   auto s = new ScreamV2Tx(
     0.7,
     0.7,
     0.06f,
-    100 * 1000 / 8,
-    1.5f,
-    1.5f,
-    2.0f,
+    initialCwnd,
+    packetPacingHeadroom,
+    adaptivePaceHeadroom,
+    bytesInFlightHeadroom,
     0.45f,
-    isL4s
+    isL4s,
+    maxWindowHeadroom
   );
 
   s->enablePacketPacing(pacing);
+  s->enableDelayBasedCongestionControl(delayBasedCC);
+  s->enableRelaxedPacing(relaxedPacing);
 
   return s;
 }

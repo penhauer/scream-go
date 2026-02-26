@@ -19,7 +19,15 @@ typedef struct ScreamV2Tx ScreamV2Tx;
 #include <stdbool.h>
 #include <stdint.h>
 
-ScreamV2Tx* ScreamTxInit(bool isL4s, bool pacing);
+ScreamV2Tx* ScreamTxInit(bool isL4s,
+                         bool pacing,
+                         bool delayBasedCC,
+                         float packetPacingHeadroom,
+                         float adaptivePaceHeadroom,
+                         float bytesInFlightHeadroom,
+                         float maxWindowHeadroom,
+                         bool relaxedPacing,
+                         int initialCwnd);
 void ScreamTxFree(ScreamV2Tx*);
 
 void ScreamTxRegisterNewStream(ScreamV2Tx*,

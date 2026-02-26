@@ -23,11 +23,47 @@ type Tx struct {
 	queues   []*cgo.Handle
 }
 
+type TxConfig struct {
+	IsL4S                 bool
+	Pacing                bool
+	DelayBasedCC          bool
+	PacketPacingHeadroom  float64
+	AdaptivePaceHeadroom  float64
+	BytesInFlightHeadroom float64
+	MaxWindowHeadroom     float64
+	RelaxedPacing         bool
+	InitialCwnd           int
+}
+
+func DefaultTxConfig() TxConfig {
+	return TxConfig{
+		IsL4S:                 false,
+		Pacing:                true,
+		DelayBasedCC:          true,
+		PacketPacingHeadroom:  1.5,
+		AdaptivePaceHeadroom:  1.5,
+		BytesInFlightHeadroom: 2.0,
+		MaxWindowHeadroom:     5.0,
+		RelaxedPacing:         false,
+		InitialCwnd:           100 * 1000 / 8,
+	}
+}
+
 // NewTx creates a new Tx instance.
-func NewTx(isL4S bool, pacing bool) *Tx {
+func NewTx(config TxConfig) *Tx {
 	return &Tx{
-		screamTx: C.ScreamTxInit(C.bool(isL4S), C.bool(pacing)),
-		pinner:   &runtime.Pinner{},
+		screamTx: C.ScreamTxInit(
+			C.bool(config.IsL4S),
+			C.bool(config.Pacing),
+			C.bool(config.DelayBasedCC),
+			C.float(config.PacketPacingHeadroom),
+			C.float(config.AdaptivePaceHeadroom),
+			C.float(config.BytesInFlightHeadroom),
+			C.float(config.MaxWindowHeadroom),
+			C.bool(config.RelaxedPacing),
+			C.int(config.InitialCwnd),
+		),
+		pinner: &runtime.Pinner{},
 	}
 }
 
